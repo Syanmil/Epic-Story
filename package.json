@@ -1,0 +1,19 @@
+{
+  "name": "epic-story",
+  "version": "1.0.0",
+  "description": "Let's build somethin cool and epic",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Syanmil/Epic-Story.git"
+  },
+  "author": "Syanmil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Syanmil/Epic-Story/issues"
+  },
+  "homepage": "https://github.com/Syanmil/Epic-Story#readme"
+}
