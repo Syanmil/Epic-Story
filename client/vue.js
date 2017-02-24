@@ -3,10 +3,11 @@ var app = new Vue({
   data: {
     message: 'Hello World!!!',
     authenticated: false,
-    page: "landing",
+    page: "home",
     username: '',
     password: '',
-    email: ''
+    email: '',
+    items: []
   },
   methods: {
     login: function(){
@@ -47,5 +48,15 @@ var app = new Vue({
         }
       })
     },
+    populate: function(number){
+      for (var i = 0; i < number; i++){
+        app.items.push(i)
+        app.items.push(i)
+      }
+    },
+    startgame: function(){
+      app.page = 'play'
+      app.populate(4)
+    }
   }
 })

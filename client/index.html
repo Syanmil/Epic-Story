@@ -30,13 +30,7 @@
         </div>
       </div>
       <div v-if="page=='landing'">
-        <div class="ui inverted vertical masthead center aligned segment">
-          <div class="ui text container">
-            <h1 class="ui inverted header">
-              Welcome To Admin Panel
-            </h1>
-          </div>
-        </div>
+        <img class="ui image massive centered" src="pic1.jpg" alt="">
       </div>
       <div v-if="page=='login'">
         <div class="ui middle aligned center aligned grid">
@@ -102,9 +96,20 @@
           </div>
         </div>
       </div>
-      </script>
       <div v-if="page=='home'">
-
+        <div class="ui text centered align container">
+          <button class="button ui massive" v-on:click="startgame()">Get Started</button>
+        </div>
+      </div>
+      <div v-if="page=='play'">
+        <br><br><br><br>
+        <div class="ui grid container">
+          <div class="four wide column" v-for="item in items">
+            <div class="ui segment">
+              <img src="item.image">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   <script src="vue.js"></script>
