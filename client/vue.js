@@ -7,7 +7,9 @@ var app = new Vue({
     username: '',
     password: '',
     email: '',
-    items: []
+    items: [],
+    showed: false,
+    checkName: ''
   },
   methods: {
     login: function(){
@@ -50,12 +52,24 @@ var app = new Vue({
     },
     populate: function(number){
       let cards = app.dataset(18)
+      let clones = []
       for (var i = 0; i < number; i++){
         let select = Math.floor(Math.random()*cards.length)
         let card = cards.splice(select, 1)
-        app.items.push(card[0])
-        app.items.push(card[0])
+        clones.push(card[0])
       }
+
+      let copy = clones.map(function(cops){
+        return Object.assign({}, cops)
+      })
+      copy.forEach(function(cops){
+        cops.pair = 'bas'
+      })
+      clones.forEach(function(clone){
+        clone.pair= 'das'
+      })
+
+      app.items = copy.concat(clones)
       arrayShuffle(app.items)
     },
     dataset: function(number){
@@ -68,9 +82,20 @@ var app = new Vue({
     startgame: function(){
       app.populate(8)
       app.page = 'play'
+    },
+    switching: function(clicked, clickod) {
+      console.log(clicked);
+      console.log(clickod);
+      app.checkName = clicked
+      app.showed = true
     }
   }
 })
+setInterval(function(){
+  if(app.showed){
+    app.showed = false
+  }
+}, 3000);
 function arrayShuffle(o) {
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
