@@ -1,6 +1,38 @@
 var UsersModel = require('../models/UsersModel.js');
+const hash = require('password-hash')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
+    login: function(req, res){
+        let username = req.body.username
+        let password = req.body.password
+        UsersModel.findOne({username: username}, function(err, user){
+            if (err){
+                return res.status(500).json({
+                    message: 'Error when getting users.',
+                    error: err
+                });
+            }
+            if (!user) {
+                return res.status(404).json({
+                    message: 'Incorrect username or password'
+                });
+            }
+            if (user) {
+                if (hash.verify(password, user.password)){
+                    let token = jwt.sign({username: user.username}, process.env.SECRETJWT)
+                    res.json({
+                        token: token,
+                        username: username
+                    })
+                } else {
+                    return res.status(404).json({
+                        message: 'Incorrect username or password'
+                    });
+                }
+            }
+        })
+    },
     list: function (req, res) {
         UsersModel.find(function (err, Userss) {
             if (err) {
@@ -30,7 +62,7 @@ module.exports = {
         });
     },
     create: function (req, res) {
-        var Users = new UsersModel({			username : req.body.username,			password : req.body.password,			email : req.body.email
+        var Users = new UsersModel({			username : req.body.username,			password : hash.generate(req.body.password),			email : req.body.email
         });
 
         Users.save(function (err, Users) {
