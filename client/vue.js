@@ -49,14 +49,29 @@ var app = new Vue({
       })
     },
     populate: function(number){
+      let cards = app.dataset(18)
       for (var i = 0; i < number; i++){
-        app.items.push(i)
-        app.items.push(i)
+        let select = Math.floor(Math.random()*cards.length)
+        let card = cards.splice(select, 1)
+        app.items.push(card[0])
+        app.items.push(card[0])
       }
+      arrayShuffle(app.items)
+    },
+    dataset: function(number){
+      var result = []
+      for (var i = 1; i <= number; i++){
+        result.push({image: "asset/s"+i+".jpeg"})
+      }
+      return result
     },
     startgame: function(){
+      app.populate(8)
       app.page = 'play'
-      app.populate(4)
     }
   }
 })
+function arrayShuffle(o) {
+    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+}
