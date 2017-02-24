@@ -14,8 +14,99 @@
   </head>
   <body>
     <div id="app">
-      <h1>{{message}}</h1>
+      <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui container">
+          <div class="ui large secondary inverted pointing menu">
+            <a class="header item"><i class="icon book"></i> Epic Story</a>
+            <a class="item" v-if="authenticated">Story</a>
+            <a class="item" v-if="authenticated">Share</a>
+            <a class="item" v-if="authenticated">Simple</a>
+            <div class="right item">
+              <button class="ui register inverted button" v-if="authenticated" v-on:click="logout()">Logout</button>
+              <button class="ui inverted button" v-if="!authenticated" v-on:click="login()"><i class="icon sign in"></i>Login</button>
+              <button class="ui inverted button" v-if="!authenticated" v-on:click="register()">Register</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="page=='landing'">
+        <div class="ui inverted vertical masthead center aligned segment">
+          <div class="ui text container">
+            <h1 class="ui inverted header">
+              Welcome To Admin Panel
+            </h1>
+          </div>
+        </div>
+      </div>
+      <div v-if="page=='login'">
+        <div class="ui middle aligned center aligned grid">
+          <div class="column">
+            <h2 class="ui teal header">
+              <div class="content">
+                Log-in to your account
+              </div>
+            </h2>
+            <div class="ui large form">
+              <div class="ui stacked segment">
+                <div class="field required">
+                  <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="username" placeholder="Username" v-model='username' required>
+                  </div>
+                </div>
+                <div class="field required">
+                  <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="password" placeholder="Password" v-model='password' required>
+                  </div>
+                </div>
+                <div class="ui fluid large teal button" v-on:click="signin()">Login</div>
+              </div>
+              <div class="ui error message"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="page=='register'">
+        <div class="ui middle aligned center aligned grid">
+          <div class="column">
+            <h2 class="ui green header">
+              <div class="content">
+                Register new Account
+              </div>
+            </h2>
+            <div class="ui large form" id="registerIt">
+              <div class="ui stacked segment">
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="username" placeholder="Username" v-model='username' required>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="mail icon"></i>
+                    <input type="email" name="email" placeholder="Email" v-model='email' required>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="password" placeholder="Password" v-model='password' required>
+                  </div>
+                </div>
+                <div class="ui fluid large green button" v-on:click="signup()">REGISTER</div>
+              </div>
+              <div class="ui error message"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </script>
+      <div v-if="page=='home'">
+
+      </div>
     </div>
-  <script src="vue.js"></script>  
+  <script src="vue.js"></script>
   </body>
 </html>
