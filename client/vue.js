@@ -56,6 +56,7 @@ var app = new Vue({
       for (var i = 0; i < number; i++){
         let select = Math.floor(Math.random()*cards.length)
         let card = cards.splice(select, 1)
+        card[0].isShow = false;
         clones.push(card[0])
       }
 
@@ -83,19 +84,25 @@ var app = new Vue({
       app.populate(8)
       app.page = 'play'
     },
-    switching: function(clicked, clickod) {
-      console.log(clicked);
-      console.log(clickod);
-      app.checkName = clicked
-      app.showed = true
+    openCard: function(clicked, clickod, index) {
+      if(app.checkName){
+        setTimeout(app.closeCard, 1000)
+      }
+      app.checkName = clicked+" "+clickod
+      console.log(app.checkName);
+      app.items[index].isShow = true
+    },
+    closeCard: function(){
+      app.checkName = ''
+      app.items.forEach(function(item){
+        item.isShow = false
+      })
     }
   }
 })
 setInterval(function(){
-  if(app.showed){
-    app.showed = false
-  }
-}, 3000);
+  app.closeCard()
+}, 10000);
 function arrayShuffle(o) {
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
