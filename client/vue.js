@@ -8,8 +8,9 @@ var app = new Vue({
     password: '',
     email: '',
     items: [],
-    showed: false,
-    checkName: ''
+    try: 0,
+    success: 0,
+    checkName: []
   },
   methods: {
     login: function(){
@@ -84,16 +85,27 @@ var app = new Vue({
       app.populate(8)
       app.page = 'play'
     },
-    openCard: function(clicked, clickod, index) {
-      if(app.checkName){
-        setTimeout(app.closeCard, 1000)
+    openCard: function(name, code, index) {
+      if(app.checkName[1]){
+        app.closeCard()
+      } else {
+        app.checkName.push({name: name, code: code})
+        if(app.checkName[1]){
+          console.log('try');
+          app.try+=1;
+          let first = app.checkName[0];
+          let second = app.checkName[1];
+          if (first.name == second.name && second.code != first.code) {
+            console.log('success');
+            app.success += 1
+          }
+          setTimeout(app.closeCard, 1000);
+        }
+        app.items[index].isShow = true
       }
-      app.checkName = clicked+" "+clickod
-      console.log(app.checkName);
-      app.items[index].isShow = true
     },
     closeCard: function(){
-      app.checkName = ''
+      app.checkName = []
       app.items.forEach(function(item){
         item.isShow = false
       })
