@@ -11,6 +11,7 @@ var app = new Vue({
     guess: 0,
     success: 0,
     checkName: [],
+    bonus: 0,
   },
   methods: {
     login: function(){
@@ -61,7 +62,6 @@ var app = new Vue({
         card[0].paired = false;
         clones.push(card[0])
       }
-
       let copy = clones.map(function(cops){
         return Object.assign({}, cops)
       })
@@ -91,14 +91,17 @@ var app = new Vue({
         app.closeCard()
       } else {
         app.checkName.push({name: name, code: code, index: index})
-        if(app.checkName[1]){
-          app.guess+=1;
-          let first = app.checkName[0];
-          let second = app.checkName[1];
-          if (first.name == second.name && second.code != first.code) {
+        let firstCard = app.checkName[0];
+        let secondCard = app.checkName[1];
+        if(secondCard){
+          if (app.items[firstCard.index].paired || app.items[secondCard.index].paired){
+            console.log('Already opened card');
+          } else if (firstCard.name == secondCard.name && secondCard.code != firstCard.code) {
             app.success += 1
-            app.items[first.index].paired = true
-            app.items[second.index].paired = true
+            app.items[firstCard.index].paired = true
+            app.items[secondCard.index].paired = true
+          } else {
+            app.guess+=1;
           }
           setTimeout(app.closeCard, 1000);
         }
@@ -113,11 +116,19 @@ var app = new Vue({
         }
       })
     }
+  },
+  computed: {
+    score: function(){
+      return 1000 + this.guess*(-100) + this.success*400 + app.bonus
+    }
   }
 })
 setInterval(function(){
   app.closeCard()
 }, 10000);
+setInterval(function(){
+  app.bonus -= 50
+}, 1000)
 function arrayShuffle(o) {
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
