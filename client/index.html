@@ -98,15 +98,13 @@
       </div>
       <div v-if="page=='home'">
         <div class="ui text centered align container">
-          <button class="button ui massive" v-on:click="startgame()">Get Started</button>
+          <button class="button ui massive" v-on:click="startgame()">Start Playing</button>
         </div>
       </div>
       <div v-if="page=='play'">
         <br><br><br><br>
         <div class="ui text container">
-          <h1>Number Guess : {{guess}}</h1>
-          <h1>Number Success : {{success}}</h1>
-          <h1>Your Score : {{score}}</h1>
+          <h1>Your Score : {{currentGameScore}}</h1>
         </div>
         <div class="ui grid container">
           <div class="four wide column" v-for="(item, index) in items">
@@ -115,6 +113,28 @@
               <img class="ui centered small image" style="height: 250px" src="asset/s0.jpeg" v-if="!item.isShow">
             </div>
           </div>
+        </div>
+      </div>
+      <div v-if="page=='LeaderBoard'">
+        <div class="ui container">
+          <div class="ui text container header">
+            <h1>You Win</h1>
+            <h1>Your Score is {{endScore}}</h1>
+          </div>
+          <table class="ui table">
+            <thead>
+              <th>Ranking</th>
+              <th>Player Name</th>
+              <th>Score</th>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in highscore">
+                <td>{{index + 1}}</td>
+                <td>{{item.playerName}}</td>
+                <td>{{item.playerScore}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ const User = require('./models/UsersModel.js');
 require('dotenv').config()
 
 var users = require('./routes/UsersRoutes');
+var leaderboard = require('./routes/leaderboardRoutes');
 
 var app = express()
 
@@ -51,5 +52,6 @@ app.use(passport.initialize());
 
 
 app.use('/api/users', users);
+app.use('/api/leaderboard', leaderboard)
 
 app.listen(process.env.PORT)

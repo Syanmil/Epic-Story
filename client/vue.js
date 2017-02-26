@@ -12,6 +12,10 @@ var app = new Vue({
     success: 0,
     checkName: [],
     bonus: 0,
+    numberOfPair : 8,
+    endScore: 0,
+    startingPoin: 1000,
+    highscore: []
   },
   methods: {
     login: function(){
@@ -33,7 +37,6 @@ var app = new Vue({
       .then(function(response){
         sessionStorage.setItem('token', response.data.token)
         sessionStorage.setItem('user', response.data.username)
-        app.message = sessionStorage.getItem('user')
         if(response.data.token){
           app.page = 'home'
           app.authenticated = true
@@ -83,29 +86,40 @@ var app = new Vue({
       return result
     },
     startgame: function(){
-      app.populate(8)
+      app.populate(app.numberOfPair)
       app.page = 'play'
+      setInterval(function(){
+        app.bonus -= 50
+      }, 5000)
     },
     openCard: function(name, code, index) {
       if(app.checkName[1]){
         app.closeCard()
       } else {
         app.checkName.push({name: name, code: code, index: index})
-        let firstCard = app.checkName[0];
-        let secondCard = app.checkName[1];
-        if(secondCard){
-          if (app.items[firstCard.index].paired || app.items[secondCard.index].paired){
-            console.log('Already opened card');
-          } else if (firstCard.name == secondCard.name && secondCard.code != firstCard.code) {
-            app.success += 1
-            app.items[firstCard.index].paired = true
-            app.items[secondCard.index].paired = true
-          } else {
-            app.guess+=1;
-          }
-          setTimeout(app.closeCard, 1000);
-        }
+        app.checkCard()
         app.items[index].isShow = true
+      }
+    },
+    checkCard(){
+      let firstCard = app.checkName[0];
+      let secondCard = app.checkName[1];
+      if(secondCard){
+        if (app.items[firstCard.index].paired || app.items[secondCard.index].paired){
+          console.log('Already opened card');
+        } else if (firstCard.name == secondCard.name && secondCard.code != firstCard.code) {
+          app.success += 1
+          app.items[firstCard.index].paired = true
+          app.items[secondCard.index].paired = true
+        } else {
+          app.guess+=1;
+        }
+        setTimeout(app.closeCard, 1000);
+      }
+      if(app.success == app.numberOfPair){
+        app.page = 'LeaderBoard'
+        app.endScore = app.currentGameScore
+        app.sendScore()
       }
     },
     closeCard: function(){
@@ -115,20 +129,26 @@ var app = new Vue({
           item.isShow = false
         }
       })
+    },
+    sendScore(){
+      axios.post('http://localhost:3000/api/leaderboard', {
+        playerName: sessionStorage.getItem('user'),
+        playerScore: app.endScore
+      })
+      .then(function(response){
+        app.highscore = response.data
+      })
     }
   },
   computed: {
-    score: function(){
-      return 1000 + this.guess*(-100) + this.success*400 + app.bonus
+    currentGameScore: function(){
+      return app.startingPoin + this.guess*(-100) + this.success*400 + app.bonus
     }
   }
 })
 setInterval(function(){
   app.closeCard()
 }, 10000);
-setInterval(function(){
-  app.bonus -= 50
-}, 1000)
 function arrayShuffle(o) {
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
