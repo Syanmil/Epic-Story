@@ -17,9 +17,9 @@
       <div class="ui inverted vertical masthead center aligned segment">
         <div class="ui container">
           <div class="ui large secondary inverted pointing menu">
-            <a class="header item"><i class="icon book"></i> Epic Story</a>
-            <a class="item" v-if="authenticated">Story</a>
-            <a class="item" v-if="authenticated">Share</a>
+            <a v-on:click="gotolanding()" class="header item"><i class="icon book"></i> Epic Story</a>
+            <a v-on:click="gotohome()" class="item" v-if="authenticated">Game</a>
+            <a v-on:click="gotoleaderboard()" class="item" v-if="authenticated">LeaderBoard</a>
             <a class="item" v-if="authenticated">Simple</a>
             <div class="right item">
               <button class="ui register inverted button" v-if="authenticated" v-on:click="logout()">Logout</button>
@@ -115,22 +115,22 @@
           </div>
         </div>
       </div>
-      <div v-if="page=='LeaderBoard'">
+      <div v-if="page=='leaderboard'">
         <div class="ui container">
           <div class="ui text container header">
-            <h1>You Win</h1>
-            <h1>Your Score is {{endScore}}</h1>
+            <h1 v-if="play">You Win!!</h1>
+            <h1 v-if="play">Your Score is {{endScore}}</h1>
           </div>
-          <table class="ui table">
+          <table class="ui inverted blue table">
             <thead>
-              <th>Ranking</th>
-              <th>Player Name</th>
-              <th>Score</th>
+              <th class="two column wide">Ranking</th>
+              <th class="ten column wide">Player Name</th>
+              <th class="four column wide">Score</th>
             </thead>
             <tbody>
               <tr v-for="(item, index) in highscore">
-                <td>{{index + 1}}</td>
-                <td>{{item.playerName}}</td>
+                <td><div v-bind:class="{'ribbon yellow header ui label': index<3}">{{index + 1}}</div></div></td>
+                <td v-bind:class="{'ui header': index<3}">{{item.playerName}}</td>
                 <td>{{item.playerScore}}</td>
               </tr>
             </tbody>
