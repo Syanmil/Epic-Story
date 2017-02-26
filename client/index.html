@@ -103,11 +103,15 @@
       </div>
       <div v-if="page=='play'">
         <br><br><br><br>
+        <div class="ui text container">
+          <h1>Number Guess : {{guess}}</h1>
+          <h1>Number Success : {{success}}</h1>
+        </div>
         <div class="ui grid container">
           <div class="four wide column" v-for="(item, index) in items">
             <div class="ui segment" v-on:click="openCard(item.image, item.pair, index)">
-              <img class="ui centered small image" v-bind:src="item.image" v-if="item.isShow">
-              <img class="ui centered small image" src="asset/s0.jpeg" v-if="!item.isShow">
+              <img class="ui centered small image" style="height: 250px" v-bind:src="item.image" v-if="item.isShow">
+              <img class="ui centered small image" style="height: 250px" src="asset/s0.jpeg" v-if="!item.isShow">
             </div>
           </div>
         </div>

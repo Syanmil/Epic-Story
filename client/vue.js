@@ -8,9 +8,9 @@ var app = new Vue({
     password: '',
     email: '',
     items: [],
-    try: 0,
+    guess: 0,
     success: 0,
-    checkName: []
+    checkName: [],
   },
   methods: {
     login: function(){
@@ -58,6 +58,7 @@ var app = new Vue({
         let select = Math.floor(Math.random()*cards.length)
         let card = cards.splice(select, 1)
         card[0].isShow = false;
+        card[0].paired = false;
         clones.push(card[0])
       }
 
@@ -89,15 +90,15 @@ var app = new Vue({
       if(app.checkName[1]){
         app.closeCard()
       } else {
-        app.checkName.push({name: name, code: code})
+        app.checkName.push({name: name, code: code, index: index})
         if(app.checkName[1]){
-          console.log('try');
-          app.try+=1;
+          app.guess+=1;
           let first = app.checkName[0];
           let second = app.checkName[1];
           if (first.name == second.name && second.code != first.code) {
-            console.log('success');
             app.success += 1
+            app.items[first.index].paired = true
+            app.items[second.index].paired = true
           }
           setTimeout(app.closeCard, 1000);
         }
@@ -107,7 +108,9 @@ var app = new Vue({
     closeCard: function(){
       app.checkName = []
       app.items.forEach(function(item){
-        item.isShow = false
+        if(!item.paired){
+          item.isShow = false
+        }
       })
     }
   }
